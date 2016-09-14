@@ -39,9 +39,9 @@ crops <- setNames(data.frame(
     c("Potato", "Harvest", 8, 10.5),
     c("Garlic", "Sow outdoors", 10.5, 13),
     c("Garlic", "Harvest", 6.5, 10),
-    c("Brussels Sprout", "Sow indoors", 3.5, 4.5),
-    c("Brussels Sprout", "Sow outdoors", 4, 5.5),
-    c("Brussels Sprout", "Harvest", 11, 3.5),
+    c("Brussels sprout", "Sow indoors", 3.5, 4.5),
+    c("Brussels sprout", "Sow outdoors", 4, 5.5),
+    c("Brussels sprout", "Harvest", 11, 3.5),
     c("Zucchini", "Sow indoors", 5, 5.5),
     c("Zucchini", "Sow outdoors", 5.5, 7),
     c("Zucchini", "Harvest", 7, 10),
@@ -62,8 +62,6 @@ crops <- setNames(data.frame(
 # subset of crops, change the next line to something like
 # current_crops <- c("Corn", "Pea", "Beet")
 current_crops <- unique(crops$Crop)
-crops <- crops %>%
-  filter(Crop %in% current_crops)
 
 ### Data processing ###
 # Edits are only needed in this section if the script behavior needs to be
@@ -73,6 +71,10 @@ crops <- crops %>%
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+
+# Filter crops to only include the currently desired ones
+crops <- crops %>%
+  filter(Crop %in% current_crops)
 
 # Set the start and end months for the chart range.
 # Times that go into the next year (e.g., harvesting between December and March)
@@ -184,3 +186,7 @@ ggplot(crops, aes(x = Crop, y = Time, colour = Activity)) +
 # Save the chart as a PDF in the working directory. The width and height here
 # are a good size for printing on 8.5"x11" paper; adjust as needed.
 ggsave("garden_Gantt_chart.pdf", width = 7.5, height = 10, units = "in")
+
+# Clean up
+rm(crops, current_crops, max.month, min.month, points_per_unit, times, pb_trans)
+gc()
